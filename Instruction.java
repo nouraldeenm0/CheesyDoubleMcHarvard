@@ -1,7 +1,7 @@
 public class Instruction {
     String instruction = "0000000000000000";
     Name name;
-    Type type = Type.I_FORMAT;
+    Type type;
     String opcode;
     String r1;
     String r2;
