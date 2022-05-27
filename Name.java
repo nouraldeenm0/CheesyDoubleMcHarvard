@@ -1,5 +1,5 @@
 
-public enum Instruction_name {
+public enum Name {
     ADD,
     SUB,
     MUL,
