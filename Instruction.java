@@ -1,30 +1,36 @@
 public class Instruction {
     String instruction = "0000000000000000";
+    String opcode;
     String name;
     String type;
-    String opcode;
     String r1;
     String r2;
     String immediate;
 
     public Instruction(String instruction, String type) {
         this.instruction = instruction;
-        this.opcode = instruction.substring(0, 4);
+        this.opcode = this.instruction.substring(0, 4);
         this.name = getNameDependingOnOpcode(opcode);
+        this.type = type;
         this.r1 = instruction.substring(4, 10);
+
         if (type == "R") {
             this.r2 = instruction.substring(10, 16);
+            this.immediate = "NOT SET, I am an instruction in the I FORMAT";
         }
         else if (type == "I") {
             this.immediate = instruction.substring(10, 16);
+            this.r2 = "NOT SET, I am an instruction in the R FORMAT";
         }
     }
 
     public Instruction(String name, String r1, String r2_or_immediate, String type) {
-        this.name = name;
+        this.instruction = opcode + r1 + r2_or_immediate;
         this.opcode = getOpcodeDependingOnName(name);
-        this.instruction = opcode+r1+r2_or_immediate;
+        this.name = name;
+        this.type = type;
         this.r1 = r1;
+
         if (type == "R") {
             this.r2 = r2_or_immediate;
         }
@@ -33,8 +39,8 @@ public class Instruction {
         }
     }
 
-    private String getNameDependingOnOpcode(String opcode) {
-        switch(opcode) {
+    private String getOpcodeDependingOnName(String name) {
+        switch(name) {
             case "ADD":
                 return "0000";
             case "SUB":
@@ -64,8 +70,8 @@ public class Instruction {
         }
     }
 
-    private String getOpcodeDependingOnName(String name) {
-        switch(name) {
+    private String getNameDependingOnOpcode(String opcode) {
+        switch(opcode) {
             case "0000":
                 return "ADD";
             case "0001":
@@ -96,13 +102,13 @@ public class Instruction {
 }
 
     public static void main(String[] args) {
-        Instruction inst = new Instruction("11110000001111", "I");
-        System.out.println(inst.name);
-        System.out.println(inst.type);
-        System.out.println(inst.opcode);
-        System.out.println(inst.r1);
-        System.out.println(inst.r2);
-        System.out.println(inst.immediate);
+        Instruction inst = new Instruction("0010000000111111", "I");
+        System.out.println("Name: "+inst.name);
+        System.out.println("Type: "+inst.type);
+        System.out.println("Opcode: "+inst.opcode);
+        System.out.println("R1: "+inst.r1);
+        System.out.println("R2: "+inst.r2);
+        System.out.println("Immediate: "+inst.immediate);
     }
 
 }

@@ -9,6 +9,8 @@ public class CPU {
         this.initialize_general_purpose_registers();
     }
 
+
+
     void initialize_general_purpose_registers() {
         for (int i = 0; i < general_purpose_registers.length; ++i) {
             general_purpose_registers[i] = new Register("R"+i, "0");
@@ -18,5 +20,7 @@ public class CPU {
 
     public static void main(String[] args) {
         CPU cpu = new CPU();
+        String x = cpu.general_purpose_registers[0].value;
+        System.out.println(x);
     }
 }
