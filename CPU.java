@@ -21,10 +21,11 @@ public class CPU {
 
         // incrementing program counter
         program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
-
     }
 
     void decode(String fetched) {
+        // the split(" ") will the split the string on spaces so
+        // "ADD R1 R2" will become {"ADD", "R1", "R2"}
         String[] divided_instruction = fetched.split(" ");
         String inst_name = divided_instruction[0];
         String r1 = divided_instruction[1];
@@ -33,6 +34,7 @@ public class CPU {
         // instruction type is infered inside the instruction constructor
         // now we have a decoded instruction :)
         this.decoded_instruction = new Instruction(inst_name, r1, r2_or_immediate);
+        program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
     }
 
     void execute(Instruction decoded) {
@@ -49,8 +51,17 @@ public class CPU {
                         Register r2 = general_purpose_registers[second_register_operand_address];
                         r1.value = Integer.toString(Integer.parseInt(r1.value) + Integer.parseInt(r2.value));
                         break;
+                        /*
+                            REST OF CASES ARE TO BE IMPLEMENTED
+                        */
             }
         }
+        else if (decoded.type == "I") {
+                /*
+                    TO BE IMPLEMENTED
+                */
+        }
+        program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
     }
 
 
