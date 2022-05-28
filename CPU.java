@@ -1,3 +1,4 @@
+import java.io.File;
 
 public class CPU {
     Register[] general_purpose_registers = new Register[64];
@@ -38,10 +39,10 @@ public class CPU {
         if (decoded_instruction.type == "R") {
             switch(decoded_instruction.name) {
                     case "ADD":
-                        // for example if the user wrote ADD R12 R93, this will return the '12' in R1 as an int
+                        // for example if the user wrote ADD R12 R53, this will return the '12' in R1 as an int
                         // we will then use these values to address them in the array storing general_purpose_registers
                         int first_register_operand_address = Integer.parseInt(decoded_instruction.r1.name.substring(1));
-                        // this will store 93 (assuming the user wrote 93)
+                        // this will store 93 (assuming the user wrote 53)
                         int second_register_operand_address = Integer.parseInt(decoded_instruction.r2.name.substring(1));
                         // let's declare references to the registers we want to play with (modify) so we don't have to write all these long names again
                         Register r1 = general_purpose_registers[first_register_operand_address];
@@ -63,12 +64,15 @@ public class CPU {
     public static void main(String[] args) {
         CPU cpu = new CPU();
 
-        
-        ProgramFileParser.read_file_content_to_a_string(file)
+
+        File programFile = new File("Program.txt");
+        // reading first instruction in our program into main memory
+        String programFileContent = ProgramFileParser.read_file_content_to_a_string(programFile);
+        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
 
         // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[Integer.parseInt(cpu.program_counter.value)]);
-        cpu.decode(to_be_decoded_instruction);
+        cpu.decode();
         cpu.clock_cycle += 1;
     }
 }
