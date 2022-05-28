@@ -101,14 +101,4 @@ public class Instruction {
         }
 }
 
-    public static void main(String[] args) {
-        Instruction inst = new Instruction("0010000000111111", "I");
-        System.out.println("Name: "+inst.name);
-        System.out.println("Type: "+inst.type);
-        System.out.println("Opcode: "+inst.opcode);
-        System.out.println("R1: "+inst.r1);
-        System.out.println("R2: "+inst.r2);
-        System.out.println("Immediate: "+inst.immediate);
-    }
-
 }
