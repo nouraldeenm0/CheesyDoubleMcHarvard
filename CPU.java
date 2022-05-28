@@ -38,17 +38,16 @@ public class CPU {
     }
 
     void execute(Instruction decoded) {
+
+        int first_register_operand_address = Integer.parseInt(decoded.r1.name.substring(1));
+        Register r1 = general_purpose_registers[first_register_operand_address];
+
         if (decoded.type == "R") {
+            int second_register_operand_address = Integer.parseInt(decoded.r2.name.substring(1));
+            Register r2 = general_purpose_registers[second_register_operand_address];
+
             switch(decoded.name) {
                     case "ADD":
-                        // for example if the user wrote ADD R12 R53, this will return the '12' in R1 as an int
-                        // we will then use these values to address them in the array storing general_purpose_registers
-                        int first_register_operand_address = Integer.parseInt(decoded.r1.name.substring(1));
-                        // this will store 93 (assuming the user wrote 53)
-                        int second_register_operand_address = Integer.parseInt(decoded.r2.name.substring(1));
-                        // let's declare references to the registers we want to play with (modify) so we don't have to write all these long names again
-                        Register r1 = general_purpose_registers[first_register_operand_address];
-                        Register r2 = general_purpose_registers[second_register_operand_address];
                         r1.value = Integer.toString(Integer.parseInt(r1.value) + Integer.parseInt(r2.value));
                         break;
                         /*
@@ -57,9 +56,15 @@ public class CPU {
             }
         }
         else if (decoded.type == "I") {
-                /*
-                    TO BE IMPLEMENTED
-                */
+                switch(decoded.name) {
+                    case "MOVI":
+                        r1.value = decoded.immediate;
+                        break;
+                    /*
+                        REST OF CASES ARE TO BE IMPLEMENTED
+                    */
+
+                }
         }
         program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
     }
