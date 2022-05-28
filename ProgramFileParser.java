@@ -2,7 +2,7 @@ import java.io.File;
 
 public class ProgramFileParser {
 
-        public String read_file_content_to_a_string(File file) {
+    static String read_file_content_to_a_string(File file) {
             /*
             *
             * TO BE IMPLEMENTED
@@ -12,7 +12,7 @@ public class ProgramFileParser {
         }
 
 
-    public String getNthLineFromString(String lines) {
+    static String getNthLineFromString(String lines) {
         /*
          *
          * TO BE IMPLEMENTED

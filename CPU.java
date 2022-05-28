@@ -62,6 +62,10 @@ public class CPU {
 
     public static void main(String[] args) {
         CPU cpu = new CPU();
+
+        
+        ProgramFileParser.read_file_content_to_a_string(file)
+
         // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[Integer.parseInt(cpu.program_counter.value)]);
         cpu.decode(to_be_decoded_instruction);
