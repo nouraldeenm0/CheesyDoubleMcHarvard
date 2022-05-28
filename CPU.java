@@ -60,9 +60,36 @@ public class CPU {
                     case "MOVI":
                         r1.value = decoded.immediate;
                         break;
-                    /*
-                        REST OF CASES ARE TO BE IMPLEMENTED
-                    */
+                    case "BEQZ":
+                        if (r1.value == "0") {
+                            program_counter.value = Integer.toString(
+                                Integer.parseInt(program_counter.value) + 1 + Integer.parseInt(decoded.immediate)
+                            );
+                        }
+                        break;
+                    case "ANDI":
+                        r1.value = Integer.toString(
+                            Integer.parseInt(r1.value) & Integer.parseInt(decoded.immediate)
+                        );
+                        break;
+                    case "SAL":
+                        r1.value = Integer.toString(
+                            Integer.parseInt(r1.value) << Integer.parseInt(decoded.immediate)
+                        );
+                        break;
+                    case "SAR":
+                        r1.value = Integer.toString(
+                            Integer.parseInt(r1.value) >> Integer.parseInt(decoded.immediate)
+                        );
+                        break;
+                    case "LDR":
+                        r1.value = Integer.toString(
+                            Memory.data[Integer.parseInt(decoded.immediate)]
+                        );
+                        break;
+                    case "STR":
+                        Memory.data[Integer.parseInt(decoded.immediate)] = Integer.parseInt(r1.value);
+                        break;
 
                 }
         }

@@ -16,6 +16,9 @@ public class Instruction {
         if (type == "I") {
             this.immediate = r2_or_immediate;
         }
+        /*
+            Need to check instruction validity
+        */
     }
 
     private String getTypeDependingOnName(String name) {
@@ -29,4 +32,6 @@ public class Instruction {
                     return null;
             }
         }
+
+
 }
