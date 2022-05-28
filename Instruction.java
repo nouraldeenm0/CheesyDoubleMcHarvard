@@ -1,45 +1,47 @@
 public class Instruction {
-    String instruction = "0000000000000000";
-    String opcode;
+    // String instruction_as_binary = "0000000000000000";
+    // String opcode;
     String name;
     String type;
-    String r1;
-    String r2;
+    Register r1;
+    Register r2;
     String immediate;
 
-    public Instruction(String instruction, String type) {
-        this.instruction = instruction;
-        this.opcode = this.instruction.substring(0, 4);
+    /*
+    public Instruction(String instruction_as_binary, String type) {
+        this.instruction_as_binary = instruction_as_binary;
+        this.opcode = this.instruction_as_binary.substring(0, 4);
         this.name = getNameDependingOnOpcode(opcode);
         this.type = type;
-        this.r1 = instruction.substring(4, 10);
+        this.r1.name = "R"+binToDec(Integer.parseInt(instruction_as_binary.substring(4, 10));
 
         if (type == "R") {
-            this.r2 = instruction.substring(10, 16);
+            this.r2.name = "R"+binToDec(Integer.parseInt(instruction_as_binary.substring(10, 16)));
             this.immediate = "NOT SET, I am an instruction in the I FORMAT";
         }
         else if (type == "I") {
-            this.immediate = instruction.substring(10, 16);
-            this.r2 = "NOT SET, I am an instruction in the R FORMAT";
+            this.immediate = "R"+binToDec(Integer.parseInt(instruction_as_binary.substring(10, 16)));
+            this.r2.name = "NOT SET, I am an instruction in the R FORMAT";
         }
     }
+    */
 
-    public Instruction(String name, String r1, String r2_or_immediate, String type) {
-        this.instruction = opcode + r1 + r2_or_immediate;
-        this.opcode = getOpcodeDependingOnName(name);
+    public Instruction(String name, String r1, String r2_or_immediate) {
+        //this.instruction_as_binary = opcode + r1 + r2_or_immediate;
+        // this.opcode = getOpcodeDependingOnName(name);
         this.name = name;
-        this.type = type;
-        this.r1 = r1;
+        this.type = this.getTypeDependingOnName(name);
+        this.r1.name = r1;
 
         if (type == "R") {
-            this.r2 = r2_or_immediate;
+            this.r2.name = r2_or_immediate;
         }
         if (type == "I") {
             this.immediate = r2_or_immediate;
         }
     }
 
-    private String getOpcodeDependingOnName(String name) {
+    String getOpcodeDependingOnName(String name) {
         switch(name) {
             case "ADD":
                 return "0000";
@@ -70,7 +72,7 @@ public class Instruction {
         }
     }
 
-    private String getNameDependingOnOpcode(String opcode) {
+    String getNameDependingOnOpcode(String opcode) {
         switch(opcode) {
             case "0000":
                 return "ADD";
@@ -101,4 +103,15 @@ public class Instruction {
         }
 }
 
+    private String getTypeDependingOnName(String name) {
+            switch(name) {
+                case "ADD": case "SUB": case "MUL": case "EOR": case "BR":
+                    return "R";
+                case "MOVI": case "BEQZ": case "ANDI": case "SAL": case "SAR":
+                case "LDR": case "STR":
+                    return "I";
+                default:
+                    return null;
+            }
+        }
 }
