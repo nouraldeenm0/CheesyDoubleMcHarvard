@@ -35,18 +35,20 @@ public class CPU {
     }
 
     void execute(Instruction decoded_instruction) {
-        switch(decoded_instruction.name) {
-                case "ADD":
-                    // for example if the user wrote ADD R12 R93, this will return the '12' in R1 as an int
-                    // we will then use these values to address them in the array storing general_purpose_registers
-                    int first_register_operand_address = Integer.parseInt(decoded_instruction.r1.name.substring(1));
-                    // this will store 93
-                    int second_register_operand_address = Integer.parseInt(decoded_instruction.r2.name.substring(1));
-                    int first_register_value = Integer.parseInt(decoded_instruction.r1.value);
-                    int second_register_value = Integer.parseInt(decoded_instruction.r2.value);
-
-                    Register r1 = general_purpose_registers[first_register_operand_address];
-                    Register r2 = general_purpose_registers[second_register_operand_address];
+        if (decoded_instruction.type == "R") {
+            switch(decoded_instruction.name) {
+                    case "ADD":
+                        // for example if the user wrote ADD R12 R93, this will return the '12' in R1 as an int
+                        // we will then use these values to address them in the array storing general_purpose_registers
+                        int first_register_operand_address = Integer.parseInt(decoded_instruction.r1.name.substring(1));
+                        // this will store 93 (assuming the user wrote 93)
+                        int second_register_operand_address = Integer.parseInt(decoded_instruction.r2.name.substring(1));
+                        // let's declare references to the registers we want to play with (modify) so we don't have to write all these long names again
+                        Register r1 = general_purpose_registers[first_register_operand_address];
+                        Register r2 = general_purpose_registers[second_register_operand_address];
+                        r1.value = Integer.toString(Integer.parseInt(r1.value) + Integer.parseInt(r2.value));
+                        break;
+            }
         }
     }
 
