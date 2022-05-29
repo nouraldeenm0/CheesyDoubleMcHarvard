@@ -11,7 +11,7 @@ public class CPU {
     Instruction decoded_instruction;
     Instruction executed_instruction;
 
-    CPU() {
+    CPU() throws RegisterValueIsOutOfBounds {
         this.initialize_general_purpose_registers();
     }
 
@@ -49,6 +49,12 @@ public class CPU {
             switch(decoded.name) {
                     case "ADD":
                         r1.value = Integer.toString(Integer.parseInt(r1.value) + Integer.parseInt(r2.value));
+                        break;
+                    case "SUB":
+                        r1.value = Integer.toString(Integer.parseInt(r1.value) - Integer.parseInt(r2.value));
+                        break;
+                    case "MUL":
+                        r1.value = Integer.toString(Integer.parseInt(r1.value) * Integer.parseInt(r2.value));
                         break;
                         /*
                             REST OF CASES ARE TO BE IMPLEMENTED
@@ -97,19 +103,17 @@ public class CPU {
     }
 
 
-    void initialize_general_purpose_registers() {
+    void initialize_general_purpose_registers() throws RegisterValueIsOutOfBounds {
         for (int i = 0; i < general_purpose_registers.length; ++i) {
             general_purpose_registers[i] = new Register("R"+i, "0");
             System.out.println(general_purpose_registers[i].name);
         }    
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegisterValueIsOutOfBounds {
         CPU cpu = new CPU();
-        /*
-         * ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET
-        */
 
+        /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
         File programFile = new File("Program.txt");
         // reading first instruction in our program into main memory
         String programFileContent = ProgramFileParser.read_file_content_to_a_string(programFile);
@@ -117,8 +121,11 @@ public class CPU {
 
         // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[Integer.parseInt(cpu.program_counter.value)]);
+
         cpu.decode(cpu.fetched_instruction);
+
         // cpu.execute(cpu.decoded_instruction);
+
         cpu.clock_cycle += 1;
     }
 }
