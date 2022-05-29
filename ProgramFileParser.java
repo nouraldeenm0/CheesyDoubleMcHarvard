@@ -1,15 +1,20 @@
 import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class ProgramFileParser {
 
-    static String read_file_content_to_a_string(File file) {
-            /*
-            *
-            * TO BE IMPLEMENTED
-            * 
-            */ 
-            return "";
+    static String readFile(String pathname) throws IOException {
+        File file = new File(pathname);
+        StringBuilder fileContents = new StringBuilder((int)file.length());        
+
+        try (Scanner scanner = new Scanner(file)) {
+            while(scanner.hasNextLine()) {
+                fileContents.append(scanner.nextLine() + System.lineSeparator());
+            }
+            return fileContents.toString();
         }
+    }
 
 
     // get Nth line from a String that has many lines (you can get the first line

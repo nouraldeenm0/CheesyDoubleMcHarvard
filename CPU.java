@@ -1,4 +1,4 @@
-import java.io.File;
+import java.io.IOException;
 
 public class CPU {
     Register[] general_purpose_registers = new Register[64];
@@ -7,6 +7,12 @@ public class CPU {
     Register program_counter = new Register("PC", "0");
     int clock_cycle = 1;
 
+    /*
+     * 3 instructions representing our instruction in each phase.
+     * The first phase is when the Instruction is fetched (It is still represented as a String)
+     * The second phase is when the Instruction is decoded (Now it is an Instruction Object)
+     * The third phase is when it is executed (it was decoded from the second phase so it will use the Instruction object)
+    */
     String fetched_instruction;
     Instruction decoded_instruction;
     Instruction executed_instruction;
@@ -113,13 +119,12 @@ public class CPU {
         }    
     }
 
-    public static void main(String[] args) throws RegisterValueIsOutOfBounds {
+    public static void main(String[] args) throws RegisterValueIsOutOfBounds, IOException {
         CPU cpu = new CPU();
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
-        File programFile = new File("Program.txt");
         // reading first instruction in our program into main memory
-        String programFileContent = ProgramFileParser.read_file_content_to_a_string(programFile);
+        String programFileContent = ProgramFileParser.readFile("Program.txt");
         Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
 
         // Before fetching we would read the user Program File and store the Instructions in memory
