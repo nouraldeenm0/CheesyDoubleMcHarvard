@@ -126,10 +126,9 @@ public class CPU {
     public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
         CPU cpu = new CPU();
 
-        // putInstructionsIntoMemory();
-
-        Memory.instructions[0] = "MOVI R1 33";
-        Memory.instructions[1] = "ADD R2 R1";
+        // Memory.instructions[0] = "MOVI R1 33";
+        // Memory.instructions[1] = "ADD R2 R1";
+        putInstructionsIntoMemory();
         cpu.fetch(Memory.instructions[0]);
         cpu.decode(cpu.fetched_instruction);
         cpu.execute(cpu.decoded_instruction);
@@ -142,12 +141,13 @@ public class CPU {
         // cpu.clock_cycle += 1;
     }
 
-    // private static void putInstructionsIntoMemory() throws IOException {
-    //     String programFileContent = ProgramFileParser.readFile("Program.txt");
-    //     int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
+    private static void putInstructionsIntoMemory() throws IOException {
+        String programFileContent = ProgramFileParser.readFile("Program.txt");
+        System.out.println(programFileContent);
+        int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
 
-    //     for (int i = 0; i < number_of_instructions; ++i) {
-    //         Memory.instructions[i] = ProgramFileParser.getNthLineWithContent(i ,programFileContent);
-    //     }
-    // }
+        for (int i = 0; i < number_of_instructions; ++i) {
+            Memory.instructions[i] = ProgramFileParser.getNthLineWithContent(i + 1 ,programFileContent);
+        }
+    }
 }
