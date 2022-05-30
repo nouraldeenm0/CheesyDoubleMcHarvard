@@ -29,7 +29,7 @@ public class CPU {
         ++program_counter.value;
     }
 
-    void decode(String fetched) throws InvalidInstructionArguments {
+    void decode(String fetched) throws InvalidInstructionArguments, ValueOutOfBounds {
         // the split(" ") will the split the string on spaces so
         // "ADD R1 R2" will become {"ADD", "R1", "R2"}
         String[] divided_instruction = fetched.split("\\s+");
@@ -133,13 +133,18 @@ public class CPU {
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
         // reading first instruction in our program into main memory
-        String programFileContent = ProgramFileParser.readFile("Program.txt");
-        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
+        // String programFileContent = ProgramFileParser.readFile("Program.txt");
+        // Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
 
+        Memory.instructions[0] = "ADD R1 R2";
+        
         // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[cpu.program_counter.value]);
-
+        System.out.println(cpu.fetched_instruction);
         cpu.decode(cpu.fetched_instruction);
+        System.out.println(cpu.decoded_instruction.type);
+        System.out.println(cpu.decoded_instruction.name);
+        System.out.println(cpu.decoded_instruction.r1.value);
 
         // cpu.execute(cpu.decoded_instruction);
 
