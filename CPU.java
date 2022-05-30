@@ -17,7 +17,7 @@ public class CPU {
     Instruction decoded_instruction;
     Instruction executed_instruction;
 
-    CPU() throws RegisterValueIsOutOfBounds {
+    CPU() throws ValueOutOfBounds {
         this.initialize_general_purpose_registers();
     }
 
@@ -29,18 +29,24 @@ public class CPU {
         ++program_counter.value;
     }
 
-    void decode(String fetched) {
+    void decode(String fetched) throws InvalidInstructionArguments {
         // the split(" ") will the split the string on spaces so
         // "ADD R1 R2" will become {"ADD", "R1", "R2"}
         String[] divided_instruction = fetched.split(" ");
         String inst_name = divided_instruction[0];
         String r1 = divided_instruction[1];
-        String r2_or_immediate = divided_instruction[2];
-   
-        // instruction type is infered inside the instruction constructor
-        // now we have a decoded instruction :)
-        this.decoded_instruction = new Instruction(inst_name, r1, r2_or_immediate);
-        program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
+        String r2;
+        int immediate;
+        try {
+        	immediate = Integer.parseInt(divided_instruction[2]);
+            this.decoded_instruction = new Instruction(inst_name, r1, immediate);
+        }
+        catch (NumberFormatException e) {
+        	r2 = divided_instruction[2];
+            this.decoded_instruction = new Instruction(inst_name, r1, r2);
+        }
+
+        ++program_counter.value;
     }
 
     void execute(Instruction decoded) {
@@ -105,13 +111,13 @@ public class CPU {
     }
 
 
-    void initialize_general_purpose_registers() throws RegisterValueIsOutOfBounds {
+    void initialize_general_purpose_registers() throws ValueOutOfBounds {
         for (int i = 0; i < general_purpose_registers.length; ++i) {
             general_purpose_registers[i] = new Register("R"+i, 0);
         }   
     }
 
-    public static void main(String[] args) throws RegisterValueIsOutOfBounds, IOException {
+    public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
         CPU cpu = new CPU();
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
