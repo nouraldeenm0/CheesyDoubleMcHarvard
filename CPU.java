@@ -38,7 +38,7 @@ public class CPU {
         String r2;
         int immediate;
         /*
-        In the try cattch statement divided_instruction[2] I am seeing if the value of the
+        In the try catch statement divided_instruction[2] I am seeing if the value of the
         third index (decoded_instruction[2]) is a string representing a number if it is a number
         the try statement would work succesfully without reaching the catch..
         If we try to convert a string not representing a number to an interger,
