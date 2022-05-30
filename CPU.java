@@ -3,8 +3,8 @@ import java.io.IOException;
 public class CPU {
     Register[] general_purpose_registers = new Register[64];
     // 0 0 0 C V N S Z
-    Register status = new Register("Status", "0");
-    Register program_counter = new Register("PC", "0");
+    Register status = new Register("Status", 0);
+    Register program_counter = new Register("PC", 0);
     int clock_cycle = 1;
 
     /*
@@ -23,10 +23,10 @@ public class CPU {
 
     void fetch(String instruction_from_memory) {
         // fetching instruction from main memory
-        this.fetched_instruction = instruction_from_memory; 
+        this.fetched_instruction = instruction_from_memory;
 
         // incrementing program counter
-        program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
+        ++program_counter.value;
     }
 
     void decode(String fetched) {
@@ -36,7 +36,7 @@ public class CPU {
         String inst_name = divided_instruction[0];
         String r1 = divided_instruction[1];
         String r2_or_immediate = divided_instruction[2];
-    
+   
         // instruction type is infered inside the instruction constructor
         // now we have a decoded instruction :)
         this.decoded_instruction = new Instruction(inst_name, r1, r2_or_immediate);
@@ -54,17 +54,20 @@ public class CPU {
 
             switch(decoded.name) {
                     case "ADD":
-                        r1.value = Integer.toString(Integer.parseInt(r1.value) + Integer.parseInt(r2.value));
+                        r1.value = r1.value + r2.value;
                         break;
                     case "SUB":
-                        r1.value = Integer.toString(Integer.parseInt(r1.value) - Integer.parseInt(r2.value));
+                        r1.value = r1.value - r2.value;
                         break;
                     case "MUL":
-                        r1.value = Integer.toString(Integer.parseInt(r1.value) * Integer.parseInt(r2.value));
+                        r1.value = r1.value * r2.value;
                         break;
-                        /*
-                            REST OF CASES ARE TO BE IMPLEMENTED
-                        */
+                    case "BR":
+                        program_counter.value = r1.value | r2.value;
+                        break;
+                    case "EOR":
+                        r1.value = r1.value ^ r2.value;
+                        break;
             }
         }
         else if (decoded.type == "I") {
@@ -76,47 +79,36 @@ public class CPU {
                         r1.value = decoded.immediate;
                         break;
                     case "BEQZ":
-                        if (r1.value == "0") {
-                            program_counter.value = Integer.toString(
-                                Integer.parseInt(program_counter.value) + 1 + Integer.parseInt(decoded.immediate)
-                            );
+                        if (r1.value == 0) {
+                            program_counter.value += 1 + decoded.immediate;
                         }
                         break;
                     case "ANDI":
-                        r1.value = Integer.toString(
-                            Integer.parseInt(r1.value) & Integer.parseInt(decoded.immediate)
-                        );
+                        r1.value = r1.value & decoded.immediate;
                         break;
                     case "SAL":
-                        r1.value = Integer.toString(
-                            Integer.parseInt(r1.value) << Integer.parseInt(decoded.immediate)
-                        );
+                        r1.value = r1.value << decoded.immediate;
                         break;
                     case "SAR":
-                        r1.value = Integer.toString(
-                            Integer.parseInt(r1.value) >> Integer.parseInt(decoded.immediate)
-                        );
+                        r1.value = r1.value >> decoded.immediate;
                         break;
                     case "LDR":
-                        r1.value = Integer.toString(
-                            Memory.data[Integer.parseInt(decoded.immediate)]
-                        );
+                        r1.value = Memory.data[decoded.immediate];
                         break;
                     case "STR":
-                        Memory.data[Integer.parseInt(decoded.immediate)] = Integer.parseInt(r1.value);
+                        Memory.data[decoded.immediate] = r1.value;
                         break;
 
                 }
         }
-        program_counter.value = Integer.toString(Integer.parseInt(program_counter.value) + 1);
+        ++program_counter.value;
     }
 
 
     void initialize_general_purpose_registers() throws RegisterValueIsOutOfBounds {
         for (int i = 0; i < general_purpose_registers.length; ++i) {
-            general_purpose_registers[i] = new Register("R"+i, "0");
-            System.out.println(general_purpose_registers[i].name);
-        }    
+            general_purpose_registers[i] = new Register("R"+i, 0);
+        }   
     }
 
     public static void main(String[] args) throws RegisterValueIsOutOfBounds, IOException {
@@ -128,7 +120,7 @@ public class CPU {
         Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
 
         // Before fetching we would read the user Program File and store the Instructions in memory
-        cpu.fetch(Memory.instructions[Integer.parseInt(cpu.program_counter.value)]);
+        cpu.fetch(Memory.instructions[cpu.program_counter.value]);
 
         cpu.decode(cpu.fetched_instruction);
 
