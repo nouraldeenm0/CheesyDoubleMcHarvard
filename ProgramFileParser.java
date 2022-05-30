@@ -27,6 +27,7 @@ public class ProgramFileParser {
         for (int i = 0; i < content_length; ++i) {
             if (content.charAt(i) == '\n') {
                 --cnt;
+                continue;
             }
             if (cnt == 1) {
                 ret += content.charAt(i);
@@ -38,4 +39,8 @@ public class ProgramFileParser {
         return "WEIRD";
     }
 
+    public static void main(String[] args) throws IOException {
+        String line = getNthLineFromString(5, readFile("Program.txt"));
+        System.out.println(line);
+    }
 }
