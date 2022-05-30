@@ -7,7 +7,7 @@ public class Instruction {
 
     public Instruction(String name, String r1_name, String r2_name) throws InvalidInstructionArguments, ValueOutOfBounds {
         this.name = name;
-        this.type = this.getTypeDependingOnName(name);
+        this.type = getTypeDependingOnName(name);
         this.r1 = new Register(r1_name, 0);
 
         if (this.type != "R") {
@@ -18,20 +18,27 @@ public class Instruction {
     
     public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments, ValueOutOfBounds {
         this.name = name;
-        this.type = this.getTypeDependingOnName(name);
+        this.type = getTypeDependingOnName(name);
         this.r1 = new Register(r1_name, 0);
  
         if (type != "I") {
             throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
-        if (this.immediate > Math.pow(2, 8) - 1 || this.immediate < Math.pow(2, 8) - 1) {
-            throw new ValueOutOfBounds("Immediate value is out of bounds");
+        if (this.immediate > Math.pow(2, 8) - 1 || this.immediate < -Math.pow(2, 8) - 1) {
+                throw new ValueOutOfBounds("Immediate value is out of bounds");
         }
+        this.immediate = immediate_value;
 
     }
 
 
-    private String getTypeDependingOnName(String name) {
+    @Override
+    public String toString() {
+        return "Instruction [immediate=" + immediate + ", name=" + name + ", r1=" + r1 + ", r2=" + r2 + ", type=" + type
+                + "]";
+    }
+
+    private static String getTypeDependingOnName(String name) {
             switch(name) {
                 case "ADD": case "SUB": case "MUL": case "EOR": case "BR":
                     return "R";
@@ -41,7 +48,7 @@ public class Instruction {
                 default:
                     return "WEIRD";
             }
-        }
+    }
 
 
 }

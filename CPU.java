@@ -15,7 +15,6 @@ public class CPU {
     */
     String fetched_instruction;
     Instruction decoded_instruction;
-    Instruction executed_instruction;
 
     CPU() throws ValueOutOfBounds {
         this.initialize_general_purpose_registers();
@@ -26,7 +25,6 @@ public class CPU {
         this.fetched_instruction = instruction_from_memory;
 
         // incrementing program counter
-        ++program_counter.value;
     }
 
     void decode(String fetched) throws InvalidInstructionArguments, ValueOutOfBounds {
@@ -55,7 +53,6 @@ public class CPU {
             this.decoded_instruction = new Instruction(inst_name, r1, r2);
         }
 
-        ++program_counter.value;
     }
 
     void execute(Instruction decoded) throws ValueOutOfBounds {
@@ -117,7 +114,6 @@ public class CPU {
 
                 }
         }
-        ++program_counter.value;
     }
 
 
@@ -130,23 +126,28 @@ public class CPU {
     public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
         CPU cpu = new CPU();
 
-        putInstructionsIntoMemory();
+        // putInstructionsIntoMemory();
 
-        cpu.fetch(Memory.instructions[cpu.program_counter.value]);
-        System.out.println(cpu.fetched_instruction);
+        Memory.instructions[0] = "MOVI R1 33";
+        Memory.instructions[1] = "ADD R2 R1";
+        cpu.fetch(Memory.instructions[0]);
         cpu.decode(cpu.fetched_instruction);
         cpu.execute(cpu.decoded_instruction);
-        int r1_value = cpu.general_purpose_registers[1].value;
-        System.out.println(r1_value);
-        cpu.clock_cycle += 1;
+        System.out.println(cpu.general_purpose_registers[1].value); // referencing r1: should be equal 33
+
+        cpu.fetch(Memory.instructions[1]);
+        cpu.decode(cpu.fetched_instruction);
+        cpu.execute(cpu.decoded_instruction);
+        System.out.println(cpu.general_purpose_registers[2].value); // referencing r2: should take the value of r1 (33)
+        // cpu.clock_cycle += 1;
     }
 
-    private static void putInstructionsIntoMemory() throws IOException {
-        String programFileContent = ProgramFileParser.readFile("Program.txt");
-        int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
+    // private static void putInstructionsIntoMemory() throws IOException {
+    //     String programFileContent = ProgramFileParser.readFile("Program.txt");
+    //     int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
 
-        for (int i = 0; i < number_of_instructions; ++i) {
-            Memory.instructions[i] = ProgramFileParser.getNthLineWithContent(i ,programFileContent);
-        }
-    }
+    //     for (int i = 0; i < number_of_instructions; ++i) {
+    //         Memory.instructions[i] = ProgramFileParser.getNthLineWithContent(i ,programFileContent);
+    //     }
+    // }
 }

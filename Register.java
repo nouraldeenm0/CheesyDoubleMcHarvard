@@ -11,7 +11,11 @@ public class Register {
         else {
             this.value = value;
         }
-
     }
 
+    @Override
+    public String toString() {
+        return "Register [name=" + name + ", value=" + value + "]";
+    }
+    
 }
