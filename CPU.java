@@ -59,7 +59,6 @@ public class CPU {
     }
 
     void execute(Instruction decoded) throws ValueOutOfBounds {
-
         int first_register_operand_address = Integer.parseInt(decoded.r1.name.substring(1));
         if (first_register_operand_address > 63 || first_register_operand_address < 0) {
             throw new ValueOutOfBounds("Invalid Register");   
@@ -131,22 +130,14 @@ public class CPU {
     public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
         CPU cpu = new CPU();
 
-        /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
-        // reading first instruction in our program into main memory
         putInstructionsIntoMemory();
 
-        // Memory.instructions[0] = "ADD R1 R2";
-        
-        // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[cpu.program_counter.value]);
         System.out.println(cpu.fetched_instruction);
         cpu.decode(cpu.fetched_instruction);
-        System.out.println(cpu.decoded_instruction.type);
-        System.out.println(cpu.decoded_instruction.name);
-        System.out.println(cpu.decoded_instruction.r1.value);
-
-        // cpu.execute(cpu.decoded_instruction);
-
+        cpu.execute(cpu.decoded_instruction);
+        int r1_value = cpu.general_purpose_registers[1].value;
+        System.out.println(r1_value);
         cpu.clock_cycle += 1;
     }
 
@@ -155,7 +146,7 @@ public class CPU {
         int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
 
         for (int i = 0; i < number_of_instructions; ++i) {
-            Memory.instructions[i] = ProgramFileParser.getNthLine(i ,programFileContent);
+            Memory.instructions[i] = ProgramFileParser.getNthLineWithContent(i ,programFileContent);
         }
     }
 }

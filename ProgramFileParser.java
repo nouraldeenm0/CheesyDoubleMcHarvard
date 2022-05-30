@@ -16,42 +16,36 @@ public class ProgramFileParser {
         }
     }
 
-
-    // get Nth line from a String that has many lines (you can get the first line
-    // by looping through the string and breaking when seeing the first line break '\n')
-    static String getNthLine(int n, String content) {
-        int cnt = n;
-        String ret = "";
-        int content_length = content.length();
-
-        for (int i = 0; i < content_length; ++i) {
-            if (content.charAt(i) == '\n') {
-                --cnt;
-                continue;
-            }
-            if (cnt == 1) {
-                ret += content.charAt(i);
-            }
-            if (cnt == 0) {
-                return ret;
+    static int getNumberOfLinesWithContent(String s) {
+        s = removeBlankLines(s);        
+        int s_len = s.length();
+        int cnt = 0;
+        for (int i = 0; i < s_len; ++i) {
+            if (s.charAt(i) == '\n') {
+                ++cnt;
             }
         }
-        return "WEIRD";
+        return cnt + 1;
+    }
+    static String getNthLineWithContent(int n, String s) {
+        s = removeBlankLines(s);
+        String[] lines = s.split("\n");
+        try {
+            return lines[n - 1];
+        }
+        catch (Exception e) {};
+        return "WEIRD AT getNthLine";
+    }
+    public static void main(String[] args) throws IOException {
+        //String s = getNthLineWithContent(4, readFile("Program.txt"));
+        String s = readFile("Program.txt");
+        System.out.println(getNthLineWithContent(3, s));
     }
 
-    static int getNumberOfLinesWithContent(String content) {
-        int content_length = content.length();
-        int count = 0;
-
-        for (int i = 0; i < content_length; ++i) {
-            try {
-                if (content.charAt(i) == '\n' && content.charAt(i+1) != '\n') {
-                    ++count;
-                }
-            }
-            catch (IndexOutOfBoundsException e) {}
-        }
-        return count + 1;
+    private static String removeBlankLines(String s) {
+        s = s.replaceAll("\n+", "\n");
+        if (s.endsWith("\n")) s = s.substring(0, s.length() - 1);
+        return s;
     }
 
 }
