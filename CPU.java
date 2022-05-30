@@ -133,10 +133,10 @@ public class CPU {
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
         // reading first instruction in our program into main memory
-        // String programFileContent = ProgramFileParser.readFile("Program.txt");
-        // Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
+        String programFileContent = ProgramFileParser.readFile("Program.txt");
+        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
 
-        Memory.instructions[0] = "ADD R1 R2";
+        // Memory.instructions[0] = "ADD R1 R2";
         
         // Before fetching we would read the user Program File and store the Instructions in memory
         cpu.fetch(Memory.instructions[cpu.program_counter.value]);

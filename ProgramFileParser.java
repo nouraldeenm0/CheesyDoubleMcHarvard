@@ -39,8 +39,4 @@ public class ProgramFileParser {
         return "WEIRD";
     }
 
-    public static void main(String[] args) throws IOException {
-        String line = getNthLineFromString(5, readFile("Program.txt"));
-        System.out.println(line);
-    }
 }
