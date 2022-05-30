@@ -10,25 +10,22 @@ public class Instruction {
         this.type = this.getTypeDependingOnName(name);
         this.r1.name = r1_name;
 
-        if (this.type == "R") {
-            this.r2.name = r2_name;
+        if (this.type != "R") {
+            throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
-        else {
-        	throw new InvalidInstructionArguments("Invalid Instruction Arguments");
-        }
+        this.r2.name = r2_name;
     }
     
     public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments {
         this.name = name;
         this.type = this.getTypeDependingOnName(name);
         this.r1.name = r1_name;
-
-        if (type == "I") {
-        	if (this.immediate > Math.pow(2, 8) - 1);
+ 
+        if (type != "I") {
+            throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
-        else {
-        	throw new InvalidInstructionArguments("Invalid Instruction Arguments");
-
+        if (this.immediate > Math.pow(2, 8) - 1 || this.immediate < Math.pow(2, 8) - 1) {
+                throw new ValueOutOfBounds("Immediate value is out of bounds");
         }
 
     }
