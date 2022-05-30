@@ -16,7 +16,7 @@ public class Instruction {
         this.r2.name = r2_name;
     }
     
-    public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments {
+    public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments, ValueOutOfBounds {
         this.name = name;
         this.type = this.getTypeDependingOnName(name);
         this.r1.name = r1_name;
