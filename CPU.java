@@ -32,7 +32,7 @@ public class CPU {
     void decode(String fetched) throws InvalidInstructionArguments {
         // the split(" ") will the split the string on spaces so
         // "ADD R1 R2" will become {"ADD", "R1", "R2"}
-        String[] divided_instruction = fetched.split(" ");
+        String[] divided_instruction = fetched.split("\\s+");
         String inst_name = divided_instruction[0];
         String r1 = divided_instruction[1];
         String r2;
