@@ -58,11 +58,11 @@ public class CPU {
         ++program_counter.value;
     }
 
-    void execute(Instruction decoded) {
+    void execute(Instruction decoded) throws ValueOutOfBounds {
 
         int first_register_operand_address = Integer.parseInt(decoded.r1.name.substring(1));
         if (first_register_operand_address > 63 || first_register_operand_address < 0) {
-            throw new ValueOutOfBounds;   
+            throw new ValueOutOfBounds("Invalid Register");   
         }
         Register r1 = general_purpose_registers[first_register_operand_address];
 
@@ -70,7 +70,7 @@ public class CPU {
             int second_register_operand_address = Integer.parseInt(decoded.r2.name.substring(1));
             Register r2 = general_purpose_registers[second_register_operand_address];
             if (second_register_operand_address > 63 || second_register_operand_address < 0) {
-                throw new ValueOutOfBounds;   
+                throw new ValueOutOfBounds("Invalid Register");   
             }
             switch(decoded.name) {
                     case "ADD":
