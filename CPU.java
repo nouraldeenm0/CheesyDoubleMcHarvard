@@ -77,9 +77,6 @@ public class CPU {
             }
         }
         else if (decoded.type == "I") {
-            /*
-                CHECK immediate value validiity here
-            */
                 switch(decoded.name) {
                     case "MOVI":
                         r1.value = decoded.immediate;
