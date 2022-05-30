@@ -19,13 +19,23 @@ public class ProgramFileParser {
 
     // get Nth line from a String that has many lines (you can get the first line
     // by looping through the string and breaking when seeing the first line break '\n')
-    static String getNthLineFromString(int n, String lines) {
-        /*
-         *
-         * TO BE IMPLEMENTED
-         *
-         * 
-         */ 
-        return "";
+    static String getNthLineFromString(int n, String content) {
+        int cnt = n;
+        String ret = "";
+        int content_length = content.length();
+
+        for (int i = 0; i < content_length; ++i) {
+            if (content.charAt(i) == '\n') {
+                --cnt;
+            }
+            if (cnt == 1) {
+                ret += content.charAt(i);
+            }
+            if (cnt == 0) {
+                return ret;
+            }
+        }
+        return "WEIRD";
     }
+
 }
