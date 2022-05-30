@@ -5,27 +5,27 @@ public class Instruction {
     Register r2;
     int immediate;
 
-    public Instruction(String name, String r1_name, String r2_name) throws InvalidInstructionArguments {
+    public Instruction(String name, String r1_name, String r2_name) throws InvalidInstructionArguments, ValueOutOfBounds {
         this.name = name;
         this.type = this.getTypeDependingOnName(name);
-        this.r1.name = r1_name;
+        this.r1 = new Register(r1_name, 0);
 
         if (this.type != "R") {
             throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
-        this.r2.name = r2_name;
+        this.r2 = new Register(r2_name, 0);
     }
     
     public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments, ValueOutOfBounds {
         this.name = name;
         this.type = this.getTypeDependingOnName(name);
-        this.r1.name = r1_name;
+        this.r1 = new Register(r1_name, 0);
  
         if (type != "I") {
             throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
         if (this.immediate > Math.pow(2, 8) - 1 || this.immediate < Math.pow(2, 8) - 1) {
-                throw new ValueOutOfBounds("Immediate value is out of bounds");
+            throw new ValueOutOfBounds("Immediate value is out of bounds");
         }
 
     }
