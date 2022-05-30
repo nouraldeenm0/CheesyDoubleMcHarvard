@@ -39,4 +39,19 @@ public class ProgramFileParser {
         return "WEIRD";
     }
 
+    static int getNumberOfLinesWithContent(String content) {
+        int content_length = content.length();
+        int count = 0;
+
+        for (int i = 0; i < content_length; ++i) {
+            try {
+                if (content.charAt(i) == '\n' && content.charAt(i+1) != '\n') {
+                    ++count;
+                }
+            }
+            catch (IndexOutOfBoundsException e) {}
+        }
+        return count + 1;
+    }
+
 }

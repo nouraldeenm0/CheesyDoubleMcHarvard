@@ -133,8 +133,9 @@ public class CPU {
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
         // reading first instruction in our program into main memory
+        for (int i = 0; i < )
         String programFileContent = ProgramFileParser.readFile("Program.txt");
-        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(1 ,programFileContent);
+        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(i ,programFileContent);
 
         // Memory.instructions[0] = "ADD R1 R2";
         
