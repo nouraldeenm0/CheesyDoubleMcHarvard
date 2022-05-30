@@ -3,20 +3,36 @@ public class Instruction {
     String type;
     Register r1;
     Register r2;
-    String immediate;
+    int immediate;
 
-    public Instruction(String name, String r1, String r2_or_immediate) {
+    public Instruction(String name, String r1_name, String r2_name) throws InvalidInstructionArguments {
         this.name = name;
         this.type = this.getTypeDependingOnName(name);
-        this.r1.name = r1;
+        this.r1.name = r1_name;
 
-        if (type == "R") {
-            this.r2.name = r2_or_immediate;
+        if (this.type == "R") {
+            this.r2.name = r2_name;
         }
-        if (type == "I") {
-            this.immediate = r2_or_immediate;
+        else {
+        	throw new InvalidInstructionArguments("Invalid Instruction Arguments");
         }
     }
+    
+    public Instruction(String name, String r1_name, int immediate_value) throws InvalidInstructionArguments {
+        this.name = name;
+        this.type = this.getTypeDependingOnName(name);
+        this.r1.name = r1_name;
+
+        if (type == "I") {
+        	if (this.immediate > Math.pow(2, 8) - 1);
+        }
+        else {
+        	throw new InvalidInstructionArguments("Invalid Instruction Arguments");
+
+        }
+
+    }
+
 
     private String getTypeDependingOnName(String name) {
             switch(name) {
