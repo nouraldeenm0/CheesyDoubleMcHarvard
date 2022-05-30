@@ -37,6 +37,14 @@ public class CPU {
         String r1 = divided_instruction[1];
         String r2;
         int immediate;
+        /*
+        In the try cattch statement divided_instruction[2] I am seeing if the value of the
+        third index (decoded_instruction[2]) is a string representing a number if it is a number
+        the try statement would work succesfully without reaching the catch..
+        If we try to convert a string not representing a number to an interger,
+        for example: "Hello", then a NumberFormatException would be thrown,
+        and in that case I know that the decoded_instruction[2] is representing a register
+        */
         try {
         	immediate = Integer.parseInt(divided_instruction[2]);
             this.decoded_instruction = new Instruction(inst_name, r1, immediate);
@@ -52,12 +60,17 @@ public class CPU {
     void execute(Instruction decoded) {
 
         int first_register_operand_address = Integer.parseInt(decoded.r1.name.substring(1));
+        if (first_register_operand_address > 63 || first_register_operand_address < 0) {
+            throw new ValueOutOfBounds;   
+        }
         Register r1 = general_purpose_registers[first_register_operand_address];
 
         if (decoded.type == "R") {
             int second_register_operand_address = Integer.parseInt(decoded.r2.name.substring(1));
             Register r2 = general_purpose_registers[second_register_operand_address];
-
+            if (second_register_operand_address > 63 || second_register_operand_address < 0) {
+                throw new ValueOutOfBounds;   
+            }
             switch(decoded.name) {
                     case "ADD":
                         r1.value = r1.value + r2.value;
