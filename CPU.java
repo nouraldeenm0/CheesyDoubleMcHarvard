@@ -133,9 +133,7 @@ public class CPU {
 
         /* ONE INSTRUCTION's full story, NO PIPELINE IMPLEMENTED YET */
         // reading first instruction in our program into main memory
-        for (int i = 0; i < )
-        String programFileContent = ProgramFileParser.readFile("Program.txt");
-        Memory.instructions[0] = ProgramFileParser.getNthLineFromString(i ,programFileContent);
+        putInstructionsIntoMemory();
 
         // Memory.instructions[0] = "ADD R1 R2";
         
@@ -150,5 +148,14 @@ public class CPU {
         // cpu.execute(cpu.decoded_instruction);
 
         cpu.clock_cycle += 1;
+    }
+
+    private static void putInstructionsIntoMemory() throws IOException {
+        String programFileContent = ProgramFileParser.readFile("Program.txt");
+        int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
+
+        for (int i = 0; i < number_of_instructions; ++i) {
+            Memory.instructions[i] = ProgramFileParser.getNthLine(i ,programFileContent);
+        }
     }
 }
