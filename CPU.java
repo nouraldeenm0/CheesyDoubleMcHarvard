@@ -3,6 +3,11 @@ import java.io.IOException;
 public class CPU {
     Register[] general_purpose_registers = new Register[64];
     // 0 0 0 C V N S Z
+    // C: Carry flag
+    // V: Overflow flag
+    // N: Negative flag
+    // S: Sign flag
+    // Z: Zero flag
     Register status = new Register("Status", 0);
     Register program_counter = new Register("PC", 0);
     int clock_cycle = 1;
@@ -69,20 +74,30 @@ public class CPU {
                 throw new ValueOutOfBounds("Invalid Register");   
             }
             switch(decoded.name) {
-                    case "ADD":
-                        r1.value = r1.value + r2.value;
-                        break;
+                case "ADD":
+                    r1.value = r1.value + r2.value;
+                    // Update status register
+                    if (r1.value == 0) status.value |= 1; else status.value &= ~1;
+                    break;
                     case "SUB":
                         r1.value = r1.value - r2.value;
+                        // Update status register
+                        if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "MUL":
                         r1.value = r1.value * r2.value;
+                        // Update status register
+                        if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "BR":
                         program_counter.value = r1.value | r2.value;
+                        // Update status register
+                        if (program_counter.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "EOR":
                         r1.value = r1.value ^ r2.value;
+                        // Update status register
+                        if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
             }
         }
