@@ -27,9 +27,6 @@ public class CPU {
 
     public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
         CPU cpu = new CPU();
-
-        // Memory.instructions[0] = "MOVI R1 33";
-        // Memory.instructions[1] = "ADD R2 R1";
         putInstructionsIntoMemory();
 
         for (String instruction : Memory.instructions) {
@@ -40,14 +37,6 @@ public class CPU {
             printRegisterValues(cpu);
             System.out.println("---------------------------------");
         }
-
-        /*
-        cpu.fetch(Memory.instructions[1]);
-        cpu.decode(cpu.fetched_instruction);
-        cpu.execute(cpu.decoded_instruction);
-        System.out.println(cpu.general_purpose_registers[2].value); // referencing r2: should take the value of r1 (33)
-        */
-        // cpu.clock_cycle += 1;
     }
 
     private static void printRegisterValues(CPU cpu) {
@@ -107,27 +96,22 @@ public class CPU {
             switch(decoded.name) {
                 case "ADD":
                     r1.value = r1.value + r2.value;
-                    // Update status register
                     if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                     break;
                     case "SUB":
                         r1.value = r1.value - r2.value;
-                        // Update status register
                         if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "MUL":
                         r1.value = r1.value * r2.value;
-                        // Update status register
                         if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "BR":
                         program_counter.value = r1.value | r2.value;
-                        // Update status register
                         if (program_counter.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
                     case "EOR":
                         r1.value = r1.value ^ r2.value;
-                        // Update status register
                         if (r1.value == 0) status.value |= 1; else status.value &= ~1;
                         break;
             }
