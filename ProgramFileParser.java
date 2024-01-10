@@ -30,11 +30,13 @@ public class ProgramFileParser {
     static String getNthLineWithContent(int n, String s) {
         return removeBlankLines(s).split("\n")[n - 1];
     }
+    /*
     public static void main(String[] args) throws IOException {
         //String s = getNthLineWithContent(4, readFile("Program.txt"));
         String s = readFile("Program.txt");
         System.out.println(getNthLineWithContent(2, s));
     }
+    */
 
     private static String removeBlankLines(String s) {
         s = s.replaceAll("\n+", "\n");
