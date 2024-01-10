@@ -34,9 +34,12 @@ public class CPU {
             cpu.fetch(instruction);
             cpu.decode(cpu.fetched_instruction);
             cpu.execute(cpu.decoded_instruction);
-            printRegisterValues(cpu);
+            cpu.clock_cycle += 1;
             System.out.println("---------------------------------");
         }
+        printRegisterValues(cpu);
+        System.out.println("Clock Cycles: " + cpu.clock_cycle);
+        System.out.println("Program Execution finished");
     }
 
     private static void printRegisterValues(CPU cpu) {
@@ -46,10 +49,8 @@ public class CPU {
     }
 
     void fetch(String instruction_from_memory) {
-        // fetching instruction from main memory
         this.fetched_instruction = instruction_from_memory;
-
-        // incrementing program counter
+        System.out.println("Fetched: " + instruction_from_memory);
     }
 
     void decode(String fetched) throws InvalidInstructionArguments, ValueOutOfBounds {
@@ -63,7 +64,7 @@ public class CPU {
         /*
         In the try catch statement divided_instruction[2] I am seeing if the value of the
         third index (decoded_instruction[2]) is a string representing a number if it is a number
-        then we know the user intent to input an immediate value and
+        then we know the user intended to input an immediate value and
         the try statement would work succesfully without reaching the catch..
         If we try to convert a string not representing a number to an interger,
         for example: "Hello", then a NumberFormatException would be thrown,
@@ -72,12 +73,13 @@ public class CPU {
         try {
         	immediate = Integer.parseInt(divided_instruction[2]);
             this.decoded_instruction = new Instruction(inst_name, r1, immediate);
+            System.out.println("Decoded: " + this.decoded_instruction);
         }
         catch (NumberFormatException e) {
         	r2 = divided_instruction[2];
             this.decoded_instruction = new Instruction(inst_name, r1, r2);
+            System.out.println("Decoded: " + this.decoded_instruction);
         }
-
     }
 
     void execute(Instruction decoded) throws ValueOutOfBounds {
@@ -144,6 +146,7 @@ public class CPU {
 
                 }
         }
+        System.out.println("Executed Instruction and Register values are updated!");
     }
 
     void initialize_general_purpose_registers() throws ValueOutOfBounds {
@@ -154,7 +157,6 @@ public class CPU {
 
     private static void putInstructionsIntoMemory() throws IOException {
         String programFileContent = ProgramFileParser.readFile("Program.txt");
-        System.out.println(programFileContent);
         int number_of_instructions = ProgramFileParser.getNumberOfLinesWithContent(programFileContent);
 
         for (int i = 0; i < number_of_instructions; ++i) {
