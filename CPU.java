@@ -25,6 +25,37 @@ public class CPU {
         this.initialize_general_purpose_registers();
     }
 
+    public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
+        CPU cpu = new CPU();
+
+        // Memory.instructions[0] = "MOVI R1 33";
+        // Memory.instructions[1] = "ADD R2 R1";
+        putInstructionsIntoMemory();
+
+        for (String instruction : Memory.instructions) {
+            if (instruction == null) break;
+            cpu.fetch(instruction);
+            cpu.decode(cpu.fetched_instruction);
+            cpu.execute(cpu.decoded_instruction);
+            printRegisterValues(cpu);
+            System.out.println("---------------------------------");
+        }
+
+        /*
+        cpu.fetch(Memory.instructions[1]);
+        cpu.decode(cpu.fetched_instruction);
+        cpu.execute(cpu.decoded_instruction);
+        System.out.println(cpu.general_purpose_registers[2].value); // referencing r2: should take the value of r1 (33)
+        */
+        // cpu.clock_cycle += 1;
+    }
+
+    private static void printRegisterValues(CPU cpu) {
+        for (int i = 0; i < cpu.general_purpose_registers.length; ++i) {
+            System.out.println(cpu.general_purpose_registers[i].name + " " + cpu.general_purpose_registers[i].value);
+        }
+    }
+
     void fetch(String instruction_from_memory) {
         // fetching instruction from main memory
         this.fetched_instruction = instruction_from_memory;
@@ -131,29 +162,10 @@ public class CPU {
         }
     }
 
-
     void initialize_general_purpose_registers() throws ValueOutOfBounds {
         for (int i = 0; i < general_purpose_registers.length; ++i) {
             general_purpose_registers[i] = new Register("R"+i, 0);
         }   
-    }
-
-    public static void main(String[] args) throws ValueOutOfBounds, IOException, InvalidInstructionArguments {
-        CPU cpu = new CPU();
-
-        // Memory.instructions[0] = "MOVI R1 33";
-        // Memory.instructions[1] = "ADD R2 R1";
-        putInstructionsIntoMemory();
-        cpu.fetch(Memory.instructions[0]);
-        cpu.decode(cpu.fetched_instruction);
-        cpu.execute(cpu.decoded_instruction);
-        System.out.println(cpu.general_purpose_registers[1].value); // referencing r1: should be equal 33
-
-        cpu.fetch(Memory.instructions[1]);
-        cpu.decode(cpu.fetched_instruction);
-        cpu.execute(cpu.decoded_instruction);
-        System.out.println(cpu.general_purpose_registers[2].value); // referencing r2: should take the value of r1 (33)
-        // cpu.clock_cycle += 1;
     }
 
     private static void putInstructionsIntoMemory() throws IOException {
