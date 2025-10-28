@@ -25,22 +25,6 @@ The simulator reads instructions from [Program.txt](Program.txt). Example progra
 - [`ProgramFileParser`](ProgramFileParser.java) — helper to read and parse `Program.txt`.  
 - [`ValueOutOfBounds`](ValueOutOfBounds.java) and [`InvalidInstructionArguments`](InvalidInstructionArguments.java) — custom exceptions used for validation.
 
-## Files in this repo
-
-- [CPU.java](CPU.java)  
-- [Instruction.java](Instruction.java)  
-- [Register.java](Register.java)  
-- [Memory.java](Memory.java)  
-- [ProgramFileParser.java](ProgramFileParser.java)  
-- [Program.txt](Program.txt)  
-- [ValueOutOfBounds.java](ValueOutOfBounds.java)  
-- [InvalidInstructionArguments.java](InvalidInstructionArguments.java)  
-- [.gitignore](.gitignore)  
-- [.vscode/settings.json](.vscode/settings.json)  
-- [.github/ISSUE_TEMPLATE/sweep-template.yml](.github/ISSUE_TEMPLATE/sweep-template.yml)  
-- [.github/ISSUE_TEMPLATE/sweep-fast-template.yml](.github/ISSUE_TEMPLATE/sweep-fast-template.yml)  
-- [.github/ISSUE_TEMPLATE/sweep-slow-template.yml](.github/ISSUE_TEMPLATE/sweep-slow-template.yml)
-
 ## How to modify the program
 - Edit [Program.txt](Program.txt) to change or add instruction lines.
 - Re-run `javac *.java && java CPU` after changes.
