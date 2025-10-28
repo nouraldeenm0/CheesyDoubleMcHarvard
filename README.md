@@ -8,7 +8,7 @@ This small university project implements:
 - A simple program file parser  
 - Error handling for invalid values and instruction arguments  
 
----
+````
 
 ## 🏃 Quick Start
 
